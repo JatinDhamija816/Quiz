@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { QuizData } from '../Data/QuizData'
 import QuizResult from './QuizResult';
 function Quiz() {
@@ -6,6 +6,7 @@ function Quiz() {
     const [score, setScore] = useState(0);
     const [clickedOption, setClickedOption] = useState(0);
     const [showResult, setShowResult] = useState(false);
+    const [violationCount, setViolationCount] = useState(0);
 
     const changeQuestion = () => {
         updateScore();
@@ -21,6 +22,17 @@ function Quiz() {
             setScore(score + 1);
         }
     }
+    const handleVisibilityChange = () => {
+        if (document.hidden) {
+            setViolationCount(violationCount + 1);
+        }
+    };
+    useEffect(() => {
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [violationCount]);
     const resetAll = () => {
         setShowResult(false);
         setCurrentQuestion(0);
@@ -34,7 +46,7 @@ function Quiz() {
             </div>
             <div className="text-center ">
                 {
-                    showResult ? (<QuizResult score={score} totalScore={QuizData.length} tryAgain={resetAll} />) : (
+                    showResult ? (<QuizResult score={score} totalScore={QuizData.length} tryAgain={resetAll} violation={violationCount} />) : (
                         <>
                             <div className="m-3 p-2 font-bold text-xl">
                                 <span>{currentQuestion + 1}. </span>
