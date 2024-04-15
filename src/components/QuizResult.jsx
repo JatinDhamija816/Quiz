@@ -1,13 +1,23 @@
 import React from 'react'
 
-function QuizResult(props) {
+function QuizResult({ score, totalScore, tryAgain }) {
     return (
         <>
-            <div className='show-score'>
-                Your Score:{props.score}<br />
-                Total Score:{props.totalScore}
+            <div>
+                <div className='m-2'>
+                    <span className='font-bold font-mono text-lg'>Your Score: </span><span className='font-medium text-base font-mono'>{score}</span>
+                </div>
+                <div className='m-2'>
+                    <span className='font-bold font-mono text-lg'>Total Score: </span><span className='font-medium text-base font-mono'>{totalScore}</span>
+                </div>
+                <div className='m-3'>
+                    <button className='bg-black text-white px-3 rounded-lg' onClick={tryAgain}>Try Again</button>
+                </div>
+                <div className='m-3'>
+                    <button className='font-medium font-mono text-lg underline' onClick={() => document.exitFullscreen()}>Press Here for Exit</button>
+                </div>
             </div>
-            <button id="next-button" onClick={props.tryAgain}>Try Again</button>
+
         </>
     )
 }
